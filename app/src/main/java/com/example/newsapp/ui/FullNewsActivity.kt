@@ -1,5 +1,7 @@
 package com.example.newsapp.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +33,12 @@ class FullNewsActivity : AppCompatActivity() {
         viewBinding.content.text = newNews?.content
         viewBinding.description.text = newNews?.description
         viewBinding.author.text = newNews?.author
+        viewBinding.url.text = newNews?.url
+        viewBinding.url.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(newNews?.url))
+            startActivity(intent)
+        }
     }
     var newNews: News? = null
     private fun initParms() {
