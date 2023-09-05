@@ -5,22 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.newsapp.R
 import com.example.newsapp.api.Constant
 import com.example.newsapp.api.model.newsResponse.News
 import com.example.newsapp.api.model.sourcesResponse.Sources
 import com.example.newsapp.databinding.FragmentNewsBinding
 import com.example.newsapp.ui.FullNewsActivity
 import com.example.newsapp.ui.ViewError
+import com.example.newsapp.ui.home.SettingsActivity
 import com.example.newsapp.ui.showMessage
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class NewsFragment : Fragment() {
     lateinit var viewBinding: FragmentNewsBinding
     lateinit var viewModel: NewsViewModel
+    lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +72,7 @@ class NewsFragment : Fragment() {
     var adapter = NewsAdapter()
 
     private fun initViews() {
+        sideMenu()
         viewBinding.vm = viewModel
         viewBinding.lifecycleOwner = this
         viewBinding.recyclerView.adapter = adapter
@@ -77,8 +85,26 @@ class NewsFragment : Fragment() {
 
     }
 
+    private fun sideMenu() {
 
-     fun showData(news: News) {
+
+        viewBinding.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.catego -> {
+                    Toast.makeText(requireContext(), "Catego", Toast.LENGTH_SHORT).show()
+                }
+                R.id.settings ->{
+                    Toast.makeText(requireContext(), "Settings", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(),SettingsActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            true
+        }
+    }
+
+
+    fun showData(news: News) {
         val intent = Intent(requireContext(), FullNewsActivity::class.java)
         intent.putExtra(Constant.OBJ_KEY,news)
         startActivity(intent)
