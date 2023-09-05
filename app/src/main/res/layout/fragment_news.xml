@@ -28,12 +28,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#39A552"
                 android:fitsSystemWindows="true"
-                android:background="#369032"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
 
                 >
