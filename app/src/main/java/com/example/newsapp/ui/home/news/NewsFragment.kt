@@ -7,26 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.isVisible
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.api.Constant
 import com.example.newsapp.api.model.newsResponse.News
 import com.example.newsapp.api.model.sourcesResponse.Sources
 import com.example.newsapp.databinding.FragmentNewsBinding
-import com.example.newsapp.ui.FullNewsActivity
-import com.example.newsapp.ui.ViewError
+import com.example.newsapp.ui.home.fullnews.FullNewsActivity
+import com.example.newsapp.ViewError
 import com.example.newsapp.ui.home.SettingsActivity
-import com.example.newsapp.ui.showMessage
-import com.google.android.material.snackbar.Snackbar
+import com.example.newsapp.showMessage
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class NewsFragment : Fragment() {
     lateinit var viewBinding: FragmentNewsBinding
     lateinit var viewModel: NewsViewModel
+    var pageSize =20
+    var currentPage = 1
+    lateinit var sourceObj: Sources
+    var isLoading : Boolean = false
     lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +61,7 @@ class NewsFragment : Fragment() {
         viewModel.soucrcesLiveData
             .observe(viewLifecycleOwner) {
                 bindTabs(it)
+                getNews()
             }
         viewModel.newsLiveData
             .observe(viewLifecycleOwner) {
@@ -67,6 +71,11 @@ class NewsFragment : Fragment() {
             .observe(viewLifecycleOwner) {
                 handleError(it)
             }
+    }
+
+    private fun getNews() {
+        viewModel.getNews(sourceObj.id, pageSize = pageSize, page =currentPage )
+        isLoading = false
     }
 
     var adapter = NewsAdapter()
@@ -82,6 +91,20 @@ class NewsFragment : Fragment() {
             }
 
         }
+        viewBinding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                var layoutManger = recyclerView.layoutManager as LinearLayoutManager
+                var lastVisibleItemCount = layoutManger.findLastVisibleItemPosition()
+                var totalItemCount = layoutManger.itemCount
+                var visableThreshold = 3
+                if (isLoading&& totalItemCount- lastVisibleItemCount<= visableThreshold){
+                    isLoading = true
+                    currentPage++
+                    getNews()
+                }
+            }
+        })
 
     }
 
@@ -121,7 +144,8 @@ class NewsFragment : Fragment() {
         viewBinding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Sources
-                viewModel.getNews(source.id)
+                sourceObj = source
+                viewModel.getNews(sourceObj.id, pageSize = pageSize, page =currentPage )
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -130,7 +154,8 @@ class NewsFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Sources
-                viewModel.getNews(source.id)
+                sourceObj = source
+                viewModel.getNews(sourceObj.id, pageSize = pageSize, page =currentPage )
             }
 
         })

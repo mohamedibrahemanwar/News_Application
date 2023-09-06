@@ -1,7 +1,5 @@
 package com.example.newsapp.ui.home.news
 
-import android.view.View
-import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.newsapp.api.ApiManger
@@ -9,7 +7,7 @@ import com.example.newsapp.api.model.newsResponse.News
 import com.example.newsapp.api.model.newsResponse.NewsResponse
 import com.example.newsapp.api.model.sourcesResponse.Sources
 import com.example.newsapp.api.model.sourcesResponse.SourcesResponse
-import com.example.newsapp.ui.ViewError
+import com.example.newsapp.ViewError
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -56,10 +54,10 @@ class NewsViewModel : ViewModel() {
             })
     }
 
-    fun getNews(sourcesId: String?) {
+    fun getNews(sourcesId: String?,pageSize:Int,page:Int) {
         shouldShowLoading.postValue(true)
         ApiManger.getApis()
-            .getNews(sources = sourcesId ?: "")
+            .getNews(sources = sourcesId ?: "", pageSize = pageSize, page = page)
             .enqueue(object : Callback<NewsResponse> {
                 override fun onResponse(
                     call: Call<NewsResponse>,
@@ -80,7 +78,7 @@ class NewsViewModel : ViewModel() {
 //                    }
                     viewError.postValue(
                         ViewError(message = errorResponse.message) {
-                            getNews(sourcesId)
+                            getNews(sourcesId,pageSize,page)
                         }
                     )
 
@@ -93,7 +91,7 @@ class NewsViewModel : ViewModel() {
 //                    }
                     viewError.postValue(
                         ViewError(t = t) {
-                            getNews(sourcesId)
+                            getNews(sourcesId,pageSize,page)
                         }
                     )
                 }

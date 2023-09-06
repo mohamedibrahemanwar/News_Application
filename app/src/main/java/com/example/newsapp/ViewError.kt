@@ -1,6 +1,4 @@
-package com.example.newsapp.ui
-
-import com.example.newsapp.ui.home.news.NewsFragment
+package com.example.newsapp
 
 data class ViewError(
     val message :String? = null,

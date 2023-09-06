@@ -18,7 +18,7 @@
             android:name=".ui.home.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.FullNewsActivity"
+            android:name=".ui.home.fullnews.FullNewsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
