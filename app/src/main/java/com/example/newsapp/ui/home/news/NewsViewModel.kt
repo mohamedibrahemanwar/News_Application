@@ -22,7 +22,7 @@ class NewsViewModel : ViewModel() {
         shouldShowLoading.postValue(true)
         ApiManger
             .getApis()
-            .getSoucrces()
+            .getSources()
             .enqueue(object : Callback<SourcesResponse> {
                 override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
                     shouldShowLoading.postValue(false)

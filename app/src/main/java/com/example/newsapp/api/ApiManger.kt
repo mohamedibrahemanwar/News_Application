@@ -9,7 +9,7 @@ object ApiManger {
 
     private fun getInstance() : Retrofit{
         if (retrofit==null){
-            retrofit = Retrofit.Builder().baseUrl("https://newsapi.org/")
+            retrofit = Retrofit.Builder().baseUrl(Constant.baseURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
