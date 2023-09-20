@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,8 +29,6 @@ class NewsFragment : Fragment() {
     var currentPage = 1
     lateinit var sourceObj: Sources
     var isLoading : Boolean = false
-    lateinit var toggle : ActionBarDrawerToggle
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
@@ -41,7 +38,7 @@ class NewsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewBinding = FragmentNewsBinding.inflate(inflater, container, false)
         return viewBinding.root
     }
@@ -94,10 +91,10 @@ class NewsFragment : Fragment() {
         viewBinding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                var layoutManger = recyclerView.layoutManager as LinearLayoutManager
-                var lastVisibleItemCount = layoutManger.findLastVisibleItemPosition()
-                var totalItemCount = layoutManger.itemCount
-                var visableThreshold = 3
+                val layoutManger = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemCount = layoutManger.findLastVisibleItemPosition()
+                val totalItemCount = layoutManger.itemCount
+                val visableThreshold = 3
                 if (isLoading&& totalItemCount- lastVisibleItemCount<= visableThreshold){
                     isLoading = true
                     currentPage++
@@ -135,10 +132,10 @@ class NewsFragment : Fragment() {
 
     private fun bindTabs(sources: List<Sources?>?) {
         if (sources == null) return
-        sources.forEach { sources ->
+        sources.forEach {
             val tab = viewBinding.tabLayout.newTab()
-            tab.text = sources?.name
-            tab.tag = sources
+            tab.text = it?.name
+            tab.tag = it
             viewBinding.tabLayout.addTab(tab)
         }
         viewBinding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
