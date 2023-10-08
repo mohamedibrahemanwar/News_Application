@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
-import com.example.newsapp.api.Constant
-import com.example.newsapp.api.model.newsResponse.News
-import com.example.newsapp.api.model.sourcesResponse.Sources
+import com.example.newsapp.data.api.Constant
+import com.example.newsapp.data.api.model.newsResponse.News
+import com.example.newsapp.data.api.model.sourcesResponse.Sources
 import com.example.newsapp.databinding.FragmentNewsBinding
 import com.example.newsapp.ui.home.fullnews.FullNewsActivity
 import com.example.newsapp.ViewError
@@ -21,7 +21,10 @@ import com.example.newsapp.ui.home.SettingsActivity
 import com.example.newsapp.showMessage
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class NewsFragment : Fragment() {
     lateinit var viewBinding: FragmentNewsBinding
     lateinit var viewModel: NewsViewModel
@@ -75,7 +78,7 @@ class NewsFragment : Fragment() {
         isLoading = false
     }
 
-    var adapter = NewsAdapter()
+    @Inject lateinit var adapter : NewsAdapter
 
     private fun initViews() {
         sideMenu()

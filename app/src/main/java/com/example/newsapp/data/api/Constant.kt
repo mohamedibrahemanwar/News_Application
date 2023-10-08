@@ -1,4 +1,4 @@
-package com.example.newsapp.api
+package com.example.newsapp.data.api
 
 object Constant {
     const val baseURL = "https://newsapi.org/"

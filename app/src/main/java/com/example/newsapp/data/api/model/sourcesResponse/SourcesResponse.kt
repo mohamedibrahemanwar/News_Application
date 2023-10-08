@@ -1,21 +1,21 @@
-package com.example.newsapp.api.model.sourcesResponse
+package com.example.newsapp.data.api.model.sourcesResponse
 
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
-import com.example.newsapp.api.model.sourcesResponse.Sources
+import com.example.newsapp.data.api.model.sourcesResponse.Sources
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
 data class SourcesResponse(
 
-	@field:SerializedName("sources")
+    @field:SerializedName("sources")
 	val sources: List<Sources?>? = null,
 
-	@field:SerializedName("status")
+    @field:SerializedName("status")
 	val status: String? = null,
 
-	@field:SerializedName("message")
+    @field:SerializedName("message")
 	val message: String? = null,
-	@field:SerializedName("code")
+    @field:SerializedName("code")
 	val code: String? = null
 ) : Parcelable
